@@ -274,6 +274,10 @@ MonoBehaviour:
     type: 3}
   scenerayPrefab: {fileID: 2385409637137136897, guid: 33e4ccd4b46c14e4c8a19dfccc9bcf0c,
     type: 3}
+  startPage: {fileID: 1462978158}
+  countDownPage: {fileID: 1778735374}
+  gameOverPage: {fileID: 1240576529}
+  score_txt: {fileID: 695938863}
   sceneToBeDestroyed: {fileID: 0}
   sceneNewlyInstantiated: {fileID: 0}
   pipeScrollingSpeed: 50
@@ -649,7 +653,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.19000001, y: 0.69625}
   m_AnchorMax: {x: 0.81500006, y: 0.75812525}
-  m_AnchoredPosition: {x: -2.0000305, y: -0.5}
+  m_AnchoredPosition: {x: -2, y: -0.5}
   m_SizeDelta: {x: 0, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &726302002

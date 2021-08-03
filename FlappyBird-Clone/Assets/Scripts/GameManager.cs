@@ -1,12 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     [SerializeField] GameObject birdPrefab;
     [SerializeField] GameObject pipePrefab;
     [SerializeField] GameObject scenerayPrefab;
+    [SerializeField] GameObject startPage;
+    [SerializeField] GameObject countDownPage;
+    [SerializeField] GameObject gameOverPage;
+    [SerializeField] Text finalScore_txt;
+    [SerializeField] Text highScore_txt;
+    [SerializeField] GameObject score_txt;
     [SerializeField] GameObject sceneToBeDestroyed;
     [SerializeField] GameObject sceneNewlyInstantiated;
 
@@ -25,12 +35,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] Vector3 newScenePosition;
     [SerializeField] Vector3 oldScenePosition;
 
+    [SerializeField] int score = 0;
+    [SerializeField] int highScore = 0;
+
+    private Text scoreText;
+
     private void Awake()
     {
-        Instantiate(birdPrefab, Vector3.zero, Quaternion.identity); //Instatiating bird at starting screen
+        highScore = PlayerPrefs.GetInt("HighScore");
+        highScore_txt.text = "HighScore: " + highScore.ToString();
+        scoreText = score_txt.GetComponent<Text>(); //Score text to update
         sceneNewlyInstantiated = Instantiate(scenerayPrefab, Vector3.zero, Quaternion.identity); //Instantiating Started Screen
         sceneToBeDestroyed = sceneNewlyInstantiated;    //At first both will point to same scenery
         sceneNewlyInstantiated.GetComponent<Scroller>().setScrollingSpeed(sceneryScrollingSpeed);   //Setting speed of scrolling
+        Instantiate(birdPrefab, Vector3.zero, Quaternion.identity); //Instatiating bird at starting screen
+        startPage.SetActive(true);  //Making start page appear
+        Time.timeScale = 0; //Pause the time of game
         spawnPipe();
     }
 
@@ -88,6 +108,57 @@ public class GameManager : MonoBehaviour
         GameObject temp = Instantiate(pipePrefab, new Vector2(xPosToSpawnPipe, Random.Range(minPipeHeight, maxPipeHeight)), Quaternion.identity);
         temp.GetComponent<Scroller>().setScrollingSpeed(pipeScrollingSpeed);
         Destroy(temp, 15);
+    }
+
+    public void startGame()
+    {
+        startPage.SetActive(false);
+        countDownPage.SetActive(true);
+        StartCoroutine("Countdown");
+    }
+
+    IEnumerator Countdown()
+    {
+        int count = 3;
+        for(int i = 0; i < count; i++)
+        {
+            yield return new WaitForSecondsRealtime(1);
+        }
+
+        countDownPage.SetActive(false);
+        score_txt.SetActive(true);
+        Time.timeScale = 1;
+    }
+
+    public void restartGame()
+    {
+        gameOverPage.SetActive(false);
+        //startGame();
+        SceneManager.LoadSceneAsync("Level01");
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+    }
+
+    public void Scoring()
+    {
+        ++score;
+        scoreText.text = score.ToString();
+    }
+
+    public void gameOver()
+    {
+        Time.timeScale = 0;
+        score_txt.SetActive(false);
+        gameOverPage.SetActive(true);
+        finalScore_txt.text = "Score: " + score.ToString();
+        updateHighScore();
+    }
+
+    private void updateHighScore()
+    {
+        if(highScore < score)
+        {
+            PlayerPrefs.SetInt("HighScore", score);
+        }
     }
 
 }

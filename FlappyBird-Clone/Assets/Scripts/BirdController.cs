@@ -7,10 +7,11 @@ public class BirdController : MonoBehaviour
 {
     [SerializeField] float flapSpeed = 200f;
     [SerializeField] Rigidbody2D rgb;
-
+    [SerializeField] GameObject manager;
     private void Start()
     {
         rgb = GetComponent<Rigidbody2D>();
+        manager = GameObject.Find("GameManager");
     }
 
     private void Update()
@@ -28,12 +29,13 @@ public class BirdController : MonoBehaviour
         {
             //Play sound
             //Destroy player
-            //Show score
+            manager.GetComponent<GameManager>().gameOver();
         }
 
         if (other.gameObject.CompareTag("ScoreZone"))
         {
             //Increment the score
+            manager.GetComponent<GameManager>().Scoring();
             //Play sound
         }
 
