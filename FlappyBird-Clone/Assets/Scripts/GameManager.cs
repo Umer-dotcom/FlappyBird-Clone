@@ -108,6 +108,14 @@ public class GameManager : MonoBehaviour
         Destroy(temp, 15);
     }
 
+    private void updatePipeSpawnTime()
+    {
+        if (score != 0 && score % 10 == 0 && timeToSpawnPipe > 2f)
+        {
+            timeToSpawnPipe -= 0.5f;
+        }
+    }
+
     public void startGame()
     {
         AudioManager.PlaySound("level");
@@ -142,6 +150,7 @@ public class GameManager : MonoBehaviour
         ++score;
         AudioManager.PlaySound("point");    //Play Sound
         scoreText.text = score.ToString();
+        updatePipeSpawnTime();
     }
 
     public void gameOver()
