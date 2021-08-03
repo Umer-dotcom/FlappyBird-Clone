@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
-
     [SerializeField] GameObject birdPrefab;
     [SerializeField] GameObject pipePrefab;
     [SerializeField] GameObject scenerayPrefab;
@@ -112,6 +110,7 @@ public class GameManager : MonoBehaviour
 
     public void startGame()
     {
+        AudioManager.PlaySound("level");
         startPage.SetActive(false);
         countDownPage.SetActive(true);
         StartCoroutine("Countdown");
@@ -141,6 +140,7 @@ public class GameManager : MonoBehaviour
     public void Scoring()
     {
         ++score;
+        AudioManager.PlaySound("point");    //Play Sound
         scoreText.text = score.ToString();
     }
 
