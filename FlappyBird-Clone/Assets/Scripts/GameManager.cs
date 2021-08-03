@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] GameObject birdPrefab;
     [SerializeField] GameObject scenerayPrefab;
     [SerializeField] GameObject sceneToBeDestroyed;
     [SerializeField] GameObject sceneNewlyInstantiated;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Instantiate(birdPrefab, Vector3.zero, Quaternion.identity); //Instatiating bird at starting screen
         sceneNewlyInstantiated = Instantiate(scenerayPrefab, Vector3.zero, Quaternion.identity); //Instantiating Started Screen
         sceneToBeDestroyed = sceneNewlyInstantiated;    //At first both will point to same scenery
         sceneNewlyInstantiated.GetComponent<SceneryScroller>().setScrollingSpeed(scrollingSpeed);   //Setting speed of scrolling
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour
     {
         if(oldScenePosition.x <= xPosToDestroyScenery)
         {
+            //Destroy scenery at x = -12.5f
             Destroy(sceneToBeDestroyed);
             sceneToBeDestroyed = sceneNewlyInstantiated;
         }
