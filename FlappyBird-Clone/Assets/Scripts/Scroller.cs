@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class SceneryScroller : MonoBehaviour
+public class Scroller : MonoBehaviour
 {
     [SerializeField] float scrollingSpeed;
     [SerializeField] Rigidbody2D rgb;
@@ -21,5 +21,4 @@ public class SceneryScroller : MonoBehaviour
     {
         scrollingSpeed = speed;
     }
-
 }
