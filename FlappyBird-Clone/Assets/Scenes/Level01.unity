@@ -150,6 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bbc0701f715ec640a5166449517373c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  birdPrefab: {fileID: 8939537546134195511, guid: 867861cdf3351ce43891222c97196e74,
+    type: 3}
   scenerayPrefab: {fileID: 2385409637137136897, guid: 33e4ccd4b46c14e4c8a19dfccc9bcf0c,
     type: 3}
   sceneToBeDestroyed: {fileID: 0}
