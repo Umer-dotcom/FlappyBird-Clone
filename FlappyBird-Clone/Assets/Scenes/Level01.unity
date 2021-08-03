@@ -300,8 +300,9 @@ MonoBehaviour:
   currentTimer: 0
   timeToSpawnPipe: 5
   sceneryScrollingSpeed: 40
-  xPosToDestroyScenery: -12.5
-  xPosToCreateScenery: -6.8
+  xPosToDestroyScenery: -18.5
+  xPosToCreateScenery: 0
+  xPosOfNewScenery: 17.77
   newScenePosition: {x: 0, y: 0, z: 0}
   oldScenePosition: {x: 0, y: 0, z: 0}
   score: 0

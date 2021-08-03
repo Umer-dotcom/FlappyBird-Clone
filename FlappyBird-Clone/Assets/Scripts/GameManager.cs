@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float sceneryScrollingSpeed = 40f;
     [SerializeField] float xPosToDestroyScenery = -12.5f;
     [SerializeField] float xPosToCreateScenery = -6.8f;
+    [SerializeField] float xPosOfNewScenery = 12;
 
     [SerializeField] Vector3 newScenePosition;
     [SerializeField] Vector3 oldScenePosition;
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
         startPage.SetActive(true);  //Making start page appear
         Time.timeScale = 0; //Pause the time of game
         spawnPipe();
+        checkCreateScenery();
     }
 
     private void Update()
@@ -57,7 +59,7 @@ public class GameManager : MonoBehaviour
         newScenePosition = sceneNewlyInstantiated.GetComponent<Transform>().position;
         oldScenePosition = sceneToBeDestroyed.GetComponent<Transform>().position;
 
-        checkCreateScenery();
+        //checkCreateScenery();
         checkDestroyScenery();
 
         //Timer
@@ -78,7 +80,7 @@ public class GameManager : MonoBehaviour
     private void createNewScenery()
     {
         sceneToBeDestroyed = sceneNewlyInstantiated;
-        sceneNewlyInstantiated = Instantiate(scenerayPrefab, new Vector2(12, 0), Quaternion.identity);
+        sceneNewlyInstantiated = Instantiate(scenerayPrefab, new Vector2(xPosOfNewScenery, 0), Quaternion.identity);
         sceneNewlyInstantiated.GetComponent<Scroller>().setScrollingSpeed(sceneryScrollingSpeed);
     }
 
@@ -86,9 +88,10 @@ public class GameManager : MonoBehaviour
     {
         if(oldScenePosition.x <= xPosToDestroyScenery)
         {
-            //Destroy scenery at x = -12.5f
+            //Destroy scenery at x = -18.5f
             Destroy(sceneToBeDestroyed);
             sceneToBeDestroyed = sceneNewlyInstantiated;
+            createNewScenery();
         }
     }
 
