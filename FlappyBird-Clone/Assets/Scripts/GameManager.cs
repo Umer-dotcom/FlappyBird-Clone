@@ -7,11 +7,14 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject birdPrefab;
+    [SerializeField] GameObject redBirdPrefab;
+    [SerializeField] GameObject yellowBirdPrefab;
     [SerializeField] GameObject pipePrefab;
     [SerializeField] GameObject scenerayPrefab;
     [SerializeField] GameObject startPage;
     [SerializeField] GameObject countDownPage;
     [SerializeField] GameObject gameOverPage;
+    [SerializeField] GameObject shopPage;
     [SerializeField] Text finalScore_txt;
     [SerializeField] Text highScore_txt;
     [SerializeField] GameObject score_txt;
@@ -36,22 +39,31 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] int score = 0;
     [SerializeField] int highScore = 0;
+    [SerializeField] GameObject currentSpawnedBird;
+    [SerializeField] string equippedBirdColour;
 
     private Text scoreText;
 
     private void Awake()
     {
+
+        if (!PlayerPrefs.HasKey("Bird"))
+        {
+            PlayerPrefs.SetString("Bird", "Blue");
+        }
+
         highScore = PlayerPrefs.GetInt("HighScore");
         highScore_txt.text = "HighScore: " + highScore.ToString();
         scoreText = score_txt.GetComponent<Text>(); //Score text to update
         sceneNewlyInstantiated = Instantiate(scenerayPrefab, Vector3.zero, Quaternion.identity); //Instantiating Started Screen
         sceneToBeDestroyed = sceneNewlyInstantiated;    //At first both will point to same scenery
         sceneNewlyInstantiated.GetComponent<Scroller>().setScrollingSpeed(sceneryScrollingSpeed);   //Setting speed of scrolling
-        Instantiate(birdPrefab, Vector3.zero, Quaternion.identity); //Instatiating bird at starting screen
+        //Instantiate(birdPrefab, Vector3.zero, Quaternion.identity); //Instatiating bird at starting screen
         startPage.SetActive(true);  //Making start page appear
         Time.timeScale = 0; //Pause the time of game
         spawnPipe();
         checkCreateScenery();
+        instantiateBird();
     }
 
     private void Update()
@@ -66,6 +78,29 @@ public class GameManager : MonoBehaviour
         currentTimer += Time.deltaTime;
         checkSpawnPipe();
 
+    }
+
+    private void instantiateBird()
+    {
+        if (currentSpawnedBird)
+        {
+            Destroy(currentSpawnedBird);
+        }
+
+        equippedBirdColour = PlayerPrefs.GetString("Bird");
+
+        if (equippedBirdColour == "Red")
+        {
+            currentSpawnedBird = Instantiate(redBirdPrefab, Vector3.zero, Quaternion.identity);
+        }
+        else if(equippedBirdColour == "Blue")
+        {
+            currentSpawnedBird = Instantiate(birdPrefab, Vector3.zero, Quaternion.identity);
+        }
+        else if(equippedBirdColour == "Yellow")
+        {
+            currentSpawnedBird = Instantiate(yellowBirdPrefab, Vector3.zero, Quaternion.identity);
+        }
     }
 
     private void checkCreateScenery()
@@ -138,6 +173,7 @@ public class GameManager : MonoBehaviour
         countDownPage.SetActive(false);
         score_txt.SetActive(true);
         Time.timeScale = 1;
+        currentSpawnedBird.GetComponent<BirdController>().setPlayerController(true);
     }
 
     public void restartGame()
@@ -171,6 +207,20 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("HighScore", score);
         }
+    }
+
+    public void openShop()
+    {
+        startPage.SetActive(false);
+        shopPage.SetActive(true);
+    }
+
+    public void closeShop()
+    {
+        shopPage.SetActive(false);
+        startPage.SetActive(true);
+
+        instantiateBird();  //Instantiating new bird according to user selection
     }
 
 }
